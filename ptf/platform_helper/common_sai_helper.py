@@ -21,9 +21,6 @@ Class contains common functions.
 
 This file contains base class for other platform classes.
 """
-
-import sys
-sys.path.append("..")
 from  sai_base_test import *
 
 class CommonSaiHelper(SaiHelper):

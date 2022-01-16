@@ -20,13 +20,9 @@
 This file contains class for brcm specified functions.
 """
 
-import sys
-import time
-# from common_sai_helper import CommonSaiHelper
-sys.path.append("..")
-from sai_base_test import *
+from platform_helper.common_sai_helper import *
 
-class BrcmSaiHelper(common_sai_helper.CommonSaiHelper):
+class BrcmSaiHelper(CommonSaiHelper):
     """
     This class contains broadcom(brcm) specified functions for the platform setup and test context configuration.
     """
@@ -90,6 +86,7 @@ class BrcmSaiHelper(common_sai_helper.CommonSaiHelper):
         '''
         Gets all the attrbute from bridge port.
         '''
+        print("BrcmSaiHelperBase::get_bridge_port_all_attribute")
 
         #Cannot get those three attributes from sai_thrift_get_bridge_port_attribute
         #ingress_filtering=True,
@@ -224,7 +221,7 @@ class BrcmSaiHelper(common_sai_helper.CommonSaiHelper):
 
             self.portX_bp - objects for all 1q bridge ports
         """
-
+        print("BrcmSaiHelperBase::load_default_1q_bridge_ports")
         attr = sai_thrift_get_bridge_attribute(
                     self.client, 
                     bridge_oid=self.default_1q_bridge,
@@ -234,7 +231,7 @@ class BrcmSaiHelper(common_sai_helper.CommonSaiHelper):
         self.assertEqual(self.status(), SAI_STATUS_SUCCESS)
 
         #try to binding the bridge port with the port index here
-        for bp in self.default_1q_bridge_port_list:
+        for bp in default_1q_bridge_port_list:
             attr = self.get_bridge_port_all_attribute(bp)
             for index in range(0, len(self.port_list)):
                 port_id = getattr(self, 'port%s' % index)

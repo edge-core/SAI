@@ -20,14 +20,9 @@
 """
 This file contains class for bfn specified functions.
 """
+from platform_helper.common_sai_helper import *
 
-import sys
-# from common_sai_helper import CommonSaiHelper
-sys.path.append("..")
-from  sai_base_test import *
-
-
-class BfnSaiHelper(common_sai_helper.CommonSaiHelper):
+class BfnSaiHelper(CommonSaiHelper):
     """
     This class contains Barefoot(bfn) specified functions for the platform setup and test context configuration.
     """

@@ -1050,6 +1050,13 @@ class MinimalPortVlanConfig(SaiHelperBase):
 
 
 def get_platform():
+    """
+    Get the platform token.
+    
+    If not any platform specified from the environment variable [PLATFORM], then the default platform will be 'common'.
+    If specified any one, it will try to concert it from standard name to a shorten name (case insentitive). \r
+    \ti.e. Broadcom -> brcm
+    """
     pl_low = PLATFORM.lower()
     pl = 'common'
     if pl_low in platform_map.keys():
@@ -1059,15 +1066,19 @@ def get_platform():
     return pl
 
 # pylint: disable=unused-import
-from platform_helper import common_sai_helper
-from platform_helper import bfn_sai_helper
-from platform_helper import brcm_sai_helper
-from platform_helper import mlnx_sai_helper
+from platform_helper.common_sai_helper import *
+from platform_helper.bfn_sai_helper import *
+from platform_helper.brcm_sai_helper import *
+from platform_helper.mlnx_sai_helper import *
 
 class PlatformSaiHelper(SaiHelper):
+    """
+    Class uses to extend from SaiHelper, base on the [platform] class attribute,
+    dynamic select a subclass from the platform_helper.
+    """
     def __new__(cls, *args, **kwargs):
         sai_helper_subclass_map = {subclass.platform: subclass for subclass in SaiHelper.__subclasses__()}
-        common_sai_helper_subclass_map = {subclass.platform: subclass for subclass in common_sai_helper.CommonSaiHelper.__subclasses__()}
+        common_sai_helper_subclass_map = {subclass.platform: subclass for subclass in CommonSaiHelper.__subclasses__()}
         pl = get_platform()
 
         if pl in common_sai_helper_subclass_map:

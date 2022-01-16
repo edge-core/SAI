@@ -19,14 +19,9 @@
 """
 This file contains class for mlnx specified functions.
 """
+from platform_helper.common_sai_helper import *
 
-import sys
-# from common_sai_helper import CommonSaiHelper
-sys.path.append("..")
-from  sai_base_test import *
-
-
-class MlnxSaiHelper(common_sai_helper.CommonSaiHelper):
+class MlnxSaiHelper(CommonSaiHelper):
     """
     This class contains Mellanox(brcm) specified functions for the platform setup and test context configuration.
     """
