@@ -98,6 +98,26 @@ typedef enum _sai_vlan_flood_control_type_t
 } sai_vlan_flood_control_type_t;
 
 /**
+ * @brief Attribute data for private vlan type
+ */
+typedef enum _sai_vlan_private_vlan_type_t
+{
+    /** Not a private VLAN */
+    SAI_VLAN_PRIVATE_VLAN_TYPE_NONE,
+
+    /** Primary VLAN */
+    SAI_VLAN_PRIVATE_VLAN_TYPE_PRIMARY,
+
+    /** Community VLAN */
+    SAI_VLAN_PRIVATE_VLAN_TYPE_COMMUNITY,
+
+    /** Isolated VLAN */
+    SAI_VLAN_PRIVATE_VLAN_TYPE_ISOLATED,
+
+} sai_vlan_private_vlan_type_t;
+
+
+/**
  * @brief Attribute Id in sai_set_vlan_attribute() and
  * sai_get_vlan_attribute() calls
  */
@@ -401,6 +421,56 @@ typedef enum _sai_vlan_attr_t
     SAI_VLAN_ATTR_TAM_OBJECT,
 
     /**
+     * @brief Enable/Disable ARP & NDP suppression
+     *
+     * When enabled, the ARP and NDP messages are trapped to CPU instead of
+     * getting copied (and flooding the vlan). Default is set to false
+     * for backward compatibility reasons
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_VLAN_ATTR_NEIGHBOR_SUPPRESSION_ENABLE,
+
+    /**
+     * @brief To set Private VLAN type on a VLAN
+     *
+     * @type sai_vlan_private_vlan_type_t
+     * @flags CREATE_AND_SET
+     * @default SAI_VLAN_PRIVATE_VLAN_TYPE_NONE
+     */
+    SAI_VLAN_ATTR_PRIVATE_VLAN_TYPE,
+
+    /**
+     * @brief Primary VLAN ID for a secondary VLAN
+     *
+     * @type sai_uint16_t
+     * @flags CREATE_AND_SET
+     * @isvlan true
+     * @default 0
+     */
+    SAI_VLAN_ATTR_PRIMARY_VLAN_ID,
+
+    /**
+     * @brief Isolated VLAN ID for a Primary VLAN
+     *
+     * @type sai_uint16_t
+     * @flags READ_ONLY
+     * @isvlan true
+     */
+    SAI_VLAN_ATTR_ASSOCIATED_ISOLATED_VLAN_ID,
+
+    /**
+     * @brief List of Community VLAN IDs for a Primary VLAN
+     *
+     * @type sai_u16_list_t
+     * @flags CREATE_AND_SET
+     * @default empty
+     */
+    SAI_VLAN_ATTR_ASSOCIATED_COMMUNITY_VLAN_LIST,
+
+    /**
      * @brief End of attributes
      */
     SAI_VLAN_ATTR_END,
@@ -453,6 +523,15 @@ typedef enum _sai_vlan_member_attr_t
     SAI_VLAN_MEMBER_ATTR_VLAN_TAGGING_MODE,
 
     /**
+     * @brief Private VLAN Trunk mode
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_VLAN_MEMBER_ATTR_PRIVATE_VLAN_TRUNK_MODE,
+
+    /**
      * @brief End of attributes
      */
     SAI_VLAN_MEMBER_ATTR_END,
@@ -486,6 +565,188 @@ typedef enum _sai_vlan_stat_t
     SAI_VLAN_STAT_OUT_QLEN
 
 } sai_vlan_stat_t;
+
+/**
+ * @brief VLAN Stack stage
+ */
+typedef enum _sai_vlan_stack_stage_t
+{
+    SAI_VLAN_STACK_STAGE_INGRESS,
+
+    SAI_VLAN_STACK_STAGE_EGRESS,
+
+} sai_vlan_stack_stage_t;
+
+/**
+ * @brief VLAN Stack action
+ *
+ * If the action is SAI_VLAN_STACK_ACTION_SWAP, the original vlan id of the frame will be replaced
+ * with new vlan id and the new vlan id will be placed in the original tag position.
+ * If the action is SAI_VLAN_STACK_ACTION_PUSH, the original vlan id of the frame will be kept if
+ * exists and the new vlan id will be added as the outer vlan tag.
+ * If the action is SAI_VLAN_STACK_ACTION_POP, the original vlan id of the frame will be removed
+ * if exists.
+ */
+typedef enum _sai_vlan_stack_action_t
+{
+    SAI_VLAN_STACK_ACTION_SWAP,
+
+    SAI_VLAN_STACK_ACTION_PUSH,
+
+    SAI_VLAN_STACK_ACTION_POP,
+
+} sai_vlan_stack_action_t;
+
+/**
+ * @brief VLAN Stack match type
+ */
+typedef enum _sai_vlan_stack_match_type_t
+{
+    SAI_VLAN_STACK_MATCH_TYPE_INNER,
+
+    SAI_VLAN_STACK_MATCH_TYPE_OUTER,
+
+} sai_vlan_stack_match_type_t;
+
+/**
+ * @brief Attributes for VLAN Stack
+ */
+typedef enum _sai_vlan_stack_attr_t
+{
+    /**
+     * @brief Start of attributes
+     */
+    SAI_VLAN_STACK_ATTR_START,
+
+    /**
+     * @brief Stage type
+     *
+     * @type sai_vlan_stack_stage_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     */
+    SAI_VLAN_STACK_ATTR_STAGE = SAI_VLAN_STACK_ATTR_START,
+
+    /**
+     * @brief Action type
+     *
+     * @type sai_vlan_stack_action_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     */
+    SAI_VLAN_STACK_ATTR_ACTION,
+
+    /**
+     * @brief Match type
+     * Conduct the action toward the inner tag or outer tag
+     *
+     * @type sai_vlan_stack_match_type_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     */
+    SAI_VLAN_STACK_ATTR_MATCH_TYPE,
+
+    /**
+     * @brief Original Vlan ID
+     *
+     * @type sai_uint16_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     * @isvlan true
+     */
+    SAI_VLAN_STACK_ATTR_ORIGINAL_VLAN_ID,
+
+    /**
+     * @brief VLAN Stack port object
+     *
+     * @type sai_object_id_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_PORT, SAI_OBJECT_TYPE_LAG
+     */
+    SAI_VLAN_STACK_ATTR_PORT,
+
+    /**
+     * @brief Applied Vlan ID
+     *
+     * @type sai_uint16_t
+     * @flags CREATE_AND_SET
+     * @isvlan true
+     * @default 0
+     * @validonly SAI_VLAN_STACK_ATTR_ACTION == SAI_VLAN_STACK_ACTION_PUSH or SAI_VLAN_STACK_ATTR_ACTION == SAI_VLAN_STACK_ACTION_SWAP
+     */
+    SAI_VLAN_STACK_ATTR_APPLIED_VLAN_ID,
+
+    /**
+     * @brief The packet priority (3 bits) in the vlan tag
+     * Range from 0 to 7. Default 0xFF will inherit the original vlan tag priority
+     *
+     * @type sai_uint8_t
+     * @flags CREATE_AND_SET
+     * @default 0xFF
+     */
+    SAI_VLAN_STACK_ATTR_VLAN_APPLIED_PRI,
+
+    /**
+     * @brief End of attributes
+     */
+    SAI_VLAN_STACK_ATTR_END,
+
+    /** Custom range base value */
+    SAI_VLAN_STACK_ATTR_CUSTOM_RANGE_START = 0x10000000,
+
+    /** End of custom range base */
+    SAI_VLAN_STACK_ATTR_CUSTOM_RANGE_END
+
+} sai_vlan_stack_attr_t;
+
+/**
+ * @brief Create and apply a single VLAN Stack rule
+ *
+ * @param[out] vlan_stack_id VLAN Stack ID
+ * @param[in] switch_id Switch id
+ * @param[in] attr_count Number of attributes
+ * @param[in] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_create_vlan_stack_fn)(
+        _Out_ sai_object_id_t *vlan_stack_id,
+        _In_ sai_object_id_t switch_id,
+        _In_ uint32_t attr_count,
+        _In_ const sai_attribute_t *attr_list);
+
+/**
+ * @brief Remove a VLAN Stack rule
+ *
+ * @param[in] vlan_stack_id VLAN Stack ID
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_remove_vlan_stack_fn)(
+        _In_ sai_object_id_t vlan_stack_id);
+
+/**
+ * @brief Modify VLAN Stack rule attribute
+ *
+ * @param[in] vlan_stack_id VLAN Stack ID
+ * @param[in] attr Attribute
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_set_vlan_stack_attribute_fn)(
+        _In_ sai_object_id_t vlan_stack_id,
+        _In_ const sai_attribute_t *attr);
+
+/**
+ * @brief Get VLAN Stack rule attribute
+ *
+ * @param[in] vlan_stack_id VLAN Stack ID
+ * @param[in] attr_count Number of attributes
+ * @param[inout] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_get_vlan_stack_attribute_fn)(
+        _In_ sai_object_id_t vlan_stack_id,
+        _In_ uint32_t attr_count,
+        _Inout_ sai_attribute_t *attr_list);
+
 
 /**
  * @brief Create a VLAN
@@ -657,6 +918,12 @@ typedef struct _sai_vlan_api_t
     sai_get_vlan_stats_fn               get_vlan_stats;
     sai_get_vlan_stats_ext_fn           get_vlan_stats_ext;
     sai_clear_vlan_stats_fn             clear_vlan_stats;
+
+    sai_create_vlan_stack_fn            create_vlan_stack;
+    sai_remove_vlan_stack_fn            remove_vlan_stack;
+    sai_set_vlan_stack_attribute_fn     set_vlan_stack_attribute;
+    sai_get_vlan_stack_attribute_fn     get_vlan_stack_attribute;
+
 
 } sai_vlan_api_t;
 

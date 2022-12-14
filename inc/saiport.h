@@ -1364,7 +1364,7 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_QOS_PFC_PRIORITY_TO_QUEUE_MAP,
 
     /**
-     * @brief Scheduler for port, Default no limits.
+     * @brief Scheduler for port on egress stage, Default no limits.
      *
      * #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE & #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE
      * attributes alone valid. Rest will be ignored.
@@ -2161,12 +2161,67 @@ typedef enum _sai_port_attr_t
     SAI_PORT_ATTR_MAX_FEC_SYMBOL_ERRORS_DETECTABLE,
 
     /**
+     * @brief Scheduler for port on egress stage, Default no limits.
+     *
+     * #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE & #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE
+     * attributes alone valid. Rest will be ignored.
+     *
+     * @type sai_object_id_t
+     * @flags CREATE_AND_SET
+     * @objects SAI_OBJECT_TYPE_SCHEDULER
+     * @allownull true
+     * @default SAI_NULL_OBJECT_ID
+     */
+    SAI_PORT_ATTR_QOS_EGRESS_SCHEDULER_PROFILE_ID,
+
+    /**
+     * @brief Scheduler for port on ingress stage, Default no limits.
+     *
+     * #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_RATE & #SAI_SCHEDULER_ATTR_MAX_BANDWIDTH_BURST_RATE
+     * attributes alone valid. Rest will be ignored.
+     *
+     * @type sai_object_id_t
+     * @flags CREATE_AND_SET
+     * @objects SAI_OBJECT_TYPE_SCHEDULER
+     * @allownull true
+     * @default SAI_NULL_OBJECT_ID
+     */
+    SAI_PORT_ATTR_QOS_INGRESS_SCHEDULER_PROFILE_ID,
+
+    /**
+     * @brief Port Link is MC-LAG peer link or not.
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_PORT_ATTR_MCLAG_PEER_LINK,
+
+    /**
      * @brief End of attributes
      */
     SAI_PORT_ATTR_END,
 
     /** Custom range base value */
     SAI_PORT_ATTR_CUSTOM_RANGE_START = 0x10000000,
+
+    /**
+     * @brief Synchronization Status
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_PORT_ATTR_SYNC_TO_EXT_PHY,
+
+    /**
+     * @brief Blocking STP packet on the port
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_PORT_ATTR_STP_BLOCKING = SAI_PORT_ATTR_CUSTOM_RANGE_START + 3,
 
     /** End of custom range base */
     SAI_PORT_ATTR_CUSTOM_RANGE_END

@@ -346,6 +346,27 @@ typedef enum _sai_hostif_trap_type_t
     /** Router traps custom range start */
     SAI_HOSTIF_TRAP_TYPE_ROUTER_CUSTOM_RANGE_BASE = 0x00003000,
 
+    /**
+     * @brief ARP suppression for request and reply packets
+     * (default packet action is forward)
+     */
+    SAI_HOSTIF_TRAP_TYPE_ARP_SUPPRESSION = 0x00003001,
+
+    /**
+     * @brief ND suppression packets
+     * (default packet action is forward)
+     */
+    SAI_HOSTIF_TRAP_TYPE_IPV6_ND_SUPPRESSION = 0x00003002,
+
+    /** Default packet action is forward */
+    SAI_HOSTIF_TRAP_TYPE_VXLAN_ARP = 0x00003003,
+
+    /**
+     * @brief MCLAG traffic (TCP dst port == 8888) to local
+     * router IP address (default packet action is drop)
+     */
+    SAI_HOSTIF_TRAP_TYPE_MCLAG = 0x00003004,
+
     /* Local IP traps */
 
     /**

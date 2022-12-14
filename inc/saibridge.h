@@ -85,6 +85,9 @@ typedef enum _sai_bridge_port_type_t
     /** Bridge tunnel port */
     SAI_BRIDGE_PORT_TYPE_TUNNEL,
 
+    /** Bridge tunnel Ethernet Segment port */
+    SAI_BRIDGE_PORT_TYPE_TUNNEL_ES,
+
 } sai_bridge_port_type_t;
 
 /**
@@ -258,6 +261,16 @@ typedef enum _sai_bridge_port_attr_t
      * @default SAI_NULL_OBJECT_ID
      */
     SAI_BRIDGE_PORT_ATTR_ISOLATION_GROUP,
+
+    /**
+     * @brief Associated Ethernet Segment id
+     *
+     * @type sai_object_id_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_TUNNEL_ES
+     * @condition SAI_BRIDGE_PORT_ATTR_TYPE == SAI_BRIDGE_PORT_TYPE_TUNNEL_ES
+     */
+    SAI_BRIDGE_PORT_ATTR_TUNNEL_ES_ID,
 
     /**
      * @brief End of attributes

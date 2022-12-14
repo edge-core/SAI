@@ -266,6 +266,15 @@ typedef enum _sai_queue_attr_t
     /** Custom range base value */
     SAI_QUEUE_ATTR_CUSTOM_RANGE_START = 0x10000000,
 
+    /**
+     * @brief Sync the HW stats to internal SW copy for the specified counter
+     *
+     * @type sai_uint32_t
+     * @flags CREATE_AND_SET
+     * @default 0
+     */
+    SAI_QUEUE_ATTR_SYNC_STAT,
+
     /** End of custom range base */
     SAI_QUEUE_ATTR_CUSTOM_RANGE_END
 

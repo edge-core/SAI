@@ -751,6 +751,16 @@ typedef enum _sai_tunnel_attr_t
     SAI_TUNNEL_ATTR_VXLAN_UDP_SPORT_SECURITY,
 
     /**
+     * @brief Tunnel Ethernet segment list
+     *
+     * @type sai_object_list_t
+     * @flags CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_TUNNEL_ES
+     * @default empty
+     */
+    SAI_TUNNEL_ATTR_ES,
+
+    /**
      * @brief End of attributes
      */
     SAI_TUNNEL_ATTR_END,
@@ -1123,6 +1133,205 @@ typedef sai_status_t (*sai_get_tunnel_map_entry_attribute_fn)(
         _Inout_ sai_attribute_t *attr_list);
 
 /**
+ * @brief Attribute Id in sai_set_es_attribute() and
+ * sai_get_es_attribute() calls
+ */
+typedef enum _sai_tunnel_es_attr_t
+{
+    /**
+     * @brief Start of attributes
+     */
+    SAI_TUNNEL_ES_ATTR_START,
+
+    /**
+     * @brief Designated forwarder configuration
+     *
+     * @type bool
+     * @flags CREATE_AND_SET
+     * @default false
+     */
+    SAI_TUNNEL_ES_ATTR_DESIGNATED_FORWARDER = SAI_TUNNEL_ES_ATTR_START,
+
+    /**
+     * @brief Ethernet segment interface
+     *
+     * @type sai_object_id_t
+     * @flags CREATE_AND_SET
+     * @objects SAI_OBJECT_TYPE_LAG
+     * @allownull true
+     * @default SAI_NULL_OBJECT_ID
+     */
+    SAI_TUNNEL_ES_ATTR_INTERFACE,
+
+    /**
+     * @brief Tunnel Ethernet segment member list
+     *
+     * @type sai_object_list_t
+     * @flags READ_ONLY
+     * @objects SAI_OBJECT_TYPE_TUNNEL_ES_MEMBER
+     */
+    SAI_TUNNEL_ES_ATTR_MEMBER_LIST,
+
+    /**
+     * @brief End of attributes
+     */
+    SAI_TUNNEL_ES_ATTR_END,
+
+    /** Custom range base value */
+    SAI_TUNNEL_ES_ATTR_CUSTOM_RANGE_START = 0x10000000,
+
+    /** End of custom range base */
+    SAI_TUNNEL_ES_ATTR_CUSTOM_RANGE_END
+
+} sai_tunnel_es_attr_t;
+
+/**
+ * @brief Create Ethernet segment
+ *
+ * @param[out] tunnel_es_id Ethernet segment id
+ * @param[in] switch_id Switch Id
+ * @param[in] attr_count Number of attributes
+ * @param[in] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_create_tunnel_es_fn)(
+        _Out_ sai_object_id_t *tunnel_es_id,
+        _In_ sai_object_id_t switch_id,
+        _In_ uint32_t attr_count,
+        _In_ const sai_attribute_t *attr_list);
+
+/**
+ * @brief Remove Ethernet segment
+ *
+ * @param[in] tunnel_es_id Ethernet segment id
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_remove_tunnel_es_fn)(
+        _In_ sai_object_id_t tunnel_es_id);
+
+/**
+ * @brief Set Ethernet segment attribute
+ *
+ * @param[in] tunnel_es_id Ethernet segment id
+ * @param[in] attr Attribute
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_set_tunnel_es_attribute_fn)(
+        _In_ sai_object_id_t tunnel_es_id,
+        _In_ const sai_attribute_t *attr);
+
+/**
+ * @brief Get Ethernet segment attribute
+ *
+ * @param[in] tunnel_es_id Ethernet segment id
+ * @param[in] attr_count Number of attributes
+ * @param[inout] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_get_tunnel_es_attribute_fn)(
+        _In_ sai_object_id_t tunnel_es_id,
+        _In_ uint32_t attr_count,
+        _Inout_ sai_attribute_t *attr_list);
+
+/**
+ * @brief Attribute Id in sai_create_es_member() and
+ * sai_remove_es_member() calls
+ */
+typedef enum _sai_tunnel_es_member_attr_t
+{
+    /**
+     * @brief Start of attributes
+     */
+    SAI_TUNNEL_ES_MEMBER_ATTR_START,
+
+    /**
+     * @brief Ethernet segment ID
+     *
+     * @type sai_object_id_t
+     * @flags MANDATORY_ON_CREATE | CREATE_ONLY
+     * @objects SAI_OBJECT_TYPE_TUNNEL_ES
+     */
+    SAI_TUNNEL_ES_MEMBER_ATTR_ES_ID = SAI_TUNNEL_ES_MEMBER_ATTR_START,
+
+    /**
+     * @brief Tunnel source IP
+     *
+     * @type sai_ip_address_t
+     * @flags CREATE_AND_SET
+     * @default 0.0.0.0
+     */
+    SAI_TUNNEL_ES_MEMBER_ATTR_IP,
+
+    /**
+     * @brief End of attributes
+     */
+    SAI_TUNNEL_ES_MEMBER_ATTR_END,
+
+    /** Custom range base value */
+    SAI_TUNNEL_ES_MEMBER_ATTR_CUSTOM_RANGE_START = 0x10000000,
+
+    /** End of custom range base */
+    SAI_TUNNEL_ES_MEMBER_ATTR_CUSTOM_RANGE_END
+
+} sai_tunnel_es_member_attr_t;
+
+/**
+ * @brief Create Ethernet segment member
+ *
+ * @param[out] tunnel_es_member_id Ethernet segment member id
+ * @param[in] switch_id Switch Id
+ * @param[in] attr_count Number of attributes
+ * @param[in] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_create_tunnel_es_member_fn)(
+        _Out_ sai_object_id_t *tunnel_es_member_id,
+        _In_ sai_object_id_t switch_id,
+        _In_ uint32_t attr_count,
+        _In_ const sai_attribute_t *attr_list);
+
+/**
+ * @brief Remove Ethernet segment member
+ *
+ * @param[in] tunnel_es_member_id Ethernet segment member id
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_remove_tunnel_es_member_fn)(
+        _In_ sai_object_id_t tunnel_es_member_id);
+
+/**
+ * @brief Set Ethernet segment member attribute
+ *
+ * @param[in] tunnel_es_member_id Ethernet segment member id
+ * @param[in] attr Attribute
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_set_tunnel_es_member_attribute_fn)(
+        _In_ sai_object_id_t tunnel_es_member_id,
+        _In_ const sai_attribute_t *attr);
+
+/**
+ * @brief Get Ethernet segment member attribute
+ *
+ * @param[in] tunnel_es_member_id Ethernet segment member id
+ * @param[in] attr_count Number of attributes
+ * @param[inout] attr_list Array of attributes
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+typedef sai_status_t (*sai_get_tunnel_es_member_attribute_fn)(
+        _In_ sai_object_id_t tunnel_es_member_id,
+        _In_ uint32_t attr_count,
+        _Inout_ sai_attribute_t *attr_list);
+
+/**
  * @brief Tunnel methods table retrieved with sai_api_query()
  */
 typedef struct _sai_tunnel_api_t
@@ -1150,6 +1359,15 @@ typedef struct _sai_tunnel_api_t
     sai_bulk_object_remove_fn                    remove_tunnels;
     sai_bulk_object_set_attribute_fn             set_tunnels_attribute;
     sai_bulk_object_get_attribute_fn             get_tunnels_attribute;
+
+    sai_create_tunnel_es_fn                      create_tunnel_es;
+    sai_remove_tunnel_es_fn                      remove_tunnel_es;
+    sai_set_tunnel_es_attribute_fn               set_tunnel_es_attribute;
+    sai_get_tunnel_es_attribute_fn               get_tunnel_es_attribute;
+    sai_create_tunnel_es_member_fn               create_tunnel_es_member;
+    sai_remove_tunnel_es_member_fn               remove_tunnel_es_member;
+    sai_set_tunnel_es_member_attribute_fn        set_tunnel_es_member_attribute;
+    sai_get_tunnel_es_member_attribute_fn        get_tunnel_es_member_attribute;
 
 } sai_tunnel_api_t;
 

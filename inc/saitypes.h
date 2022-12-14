@@ -290,6 +290,9 @@ typedef enum _sai_object_type_t
     SAI_OBJECT_TYPE_IPSEC_PORT               = 100,
     SAI_OBJECT_TYPE_IPSEC_SA                 = 101,
     SAI_OBJECT_TYPE_GENERIC_PROGRAMMABLE     = 102,
+    SAI_OBJECT_TYPE_VLAN_STACK               = 103,
+    SAI_OBJECT_TYPE_TUNNEL_ES                = 104,
+    SAI_OBJECT_TYPE_TUNNEL_ES_MEMBER         = 105,
     SAI_OBJECT_TYPE_MAX,  /* Must remain in last position */
 } sai_object_type_t;
 
