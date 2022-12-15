@@ -116,7 +116,6 @@ typedef enum _sai_vlan_private_vlan_type_t
 
 } sai_vlan_private_vlan_type_t;
 
-
 /**
  * @brief Attribute Id in sai_set_vlan_attribute() and
  * sai_get_vlan_attribute() calls
@@ -747,7 +746,6 @@ typedef sai_status_t (*sai_get_vlan_stack_attribute_fn)(
         _In_ uint32_t attr_count,
         _Inout_ sai_attribute_t *attr_list);
 
-
 /**
  * @brief Create a VLAN
  *
@@ -918,12 +916,10 @@ typedef struct _sai_vlan_api_t
     sai_get_vlan_stats_fn               get_vlan_stats;
     sai_get_vlan_stats_ext_fn           get_vlan_stats_ext;
     sai_clear_vlan_stats_fn             clear_vlan_stats;
-
     sai_create_vlan_stack_fn            create_vlan_stack;
     sai_remove_vlan_stack_fn            remove_vlan_stack;
     sai_set_vlan_stack_attribute_fn     set_vlan_stack_attribute;
     sai_get_vlan_stack_attribute_fn     get_vlan_stack_attribute;
-
 
 } sai_vlan_api_t;
 

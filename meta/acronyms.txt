@@ -77,12 +77,14 @@ LDP - Label Distribution Protocol
 LPM - Longest Prefix Match
 LSP - Label Switched Path
 MAC - Medium Access Control
+MCLAG - Multichassis Link Aggregation Groups
 MDIO - Management Data Input/Output
 MDIX - Medium Dependent Interface Crossover
 MMU - Memory Management Unit
 MPLS - Multi Protocol Label Switching
 MTU - Maximum Transmission Unit
 NAPT - Network Address Port Translation
+NDP - Neighbor Discovery Protocol
 NHLFE - Next Hop Label Forwarding Entry
 NPU - Numeric Processing Unit
 NRZ - Non Return to Zero
