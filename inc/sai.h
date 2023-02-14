@@ -302,6 +302,22 @@ sai_status_t sai_object_type_get_availability(
         _Out_ uint64_t *count);
 
 /**
+ * @brief Set the service key for SAI API module
+ *
+ * @param[in] skey Service key
+ * @param[in] sn The numerical component of the switch's serial number. For
+ * example, the serial number is composed of the module name and number, such
+ * as "module+number".
+ * @param[in] mac_addr MAC address of the switch
+ *
+ * @return #SAI_STATUS_SUCCESS on success, failure status code on error
+ */
+sai_status_t sai_skey_set(
+        _In_ const char *skey,
+        _In_ uint64_t sn,
+        _In_ const uint8_t *mac_addr);
+
+/**
  * @}
  */
 #endif /** __SAI_H_ */
