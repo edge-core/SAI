@@ -293,6 +293,7 @@ typedef enum _sai_object_type_t
     SAI_OBJECT_TYPE_VLAN_STACK               = 103,
     SAI_OBJECT_TYPE_TUNNEL_ES                = 104,
     SAI_OBJECT_TYPE_TUNNEL_ES_MEMBER         = 105,
+    SAI_OBJECT_TYPE_SKEY                     = 106,
     SAI_OBJECT_TYPE_MAX,  /* Must remain in last position */
 } sai_object_type_t;
 

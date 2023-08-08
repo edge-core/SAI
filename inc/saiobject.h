@@ -35,6 +35,7 @@
 #include <saimpls.h>
 #include <sainat.h>
 #include <saisrv6.h>
+#include <saiskey.h>
 
 /* new experimental object type includes */
 #include <saiexperimentalbmtor.h>
